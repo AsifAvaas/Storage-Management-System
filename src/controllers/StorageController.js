@@ -1,6 +1,6 @@
 const File = require("../models/File");
 const User = require("../models/User");
-const { storageInfoService, uploadFileToCloudinary, createFileRecord, updateUserStorageInfo, createFolderService, moveFileToFolder, getFilesByFolder, getFilesByDate, toggleFavorite, getFavorite, duplicateFileService, copyFileService } = require("../services/StorageService");
+const { storageInfoService, getFilesByFolder, getFilesByDate, getFavorite } = require("../services/StorageService");
 
 
 const getStorageinfo = async (req, res) => {
@@ -17,42 +17,6 @@ const getStorageinfo = async (req, res) => {
     }
 }
 
-const uploadFile = async (req, res) => {
-    try {
-        const file = req.file;
-        const { folder, fileType, userId } = req.body;
-
-        if (!file) return res.status(400).json({ message: "No file uploaded" });
-
-
-        const validFileTypes = ['image', 'pdf', 'note'];
-        if (!validFileTypes.includes(fileType)) {
-            return res.status(400).json({ message: "Invalid file type" });
-        }
-
-
-        const cloudinaryResult = await uploadFileToCloudinary(file, folder);
-
-
-        const newFile = await createFileRecord(userId, file, fileType, folder, cloudinaryResult);
-
-        await updateUserStorageInfo(userId, fileType, file.size);
-
-
-        const user = await User.findById(userId);
-        res.status(200).json({
-            message: "File uploaded successfully",
-            file: newFile,
-            storageInfo: {
-                totalStorage: user.totalStorage,
-                usedStorage: user.usedStorage,
-                storageUsage: user.storageUsage
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ message: "Upload failed", error: error.message });
-    }
-};
 const getFilesForUser = async (req, res, fileType) => {
     try {
         const { userId } = req.params; // Getting userId from URL params
@@ -66,7 +30,8 @@ const getFilesForUser = async (req, res, fileType) => {
         // Query the File collection for all files of the given fileType belonging to the user
         const files = await File.find({
             userId: userId,
-            fileType: fileType
+            fileType: fileType,
+            folderId: null  // Assuming you want files that are not in any folder
         });
 
         // If no files are found
@@ -89,29 +54,8 @@ const getNotesForUser = (req, res) => getFilesForUser(req, res, 'note');
 const getImagesForUser = (req, res) => getFilesForUser(req, res, 'image');
 
 
-const createFolder = async (req, res) => {
-    try {
-        const { userId, folderName } = req.body;
-        const folder = await createFolderService(userId, folderName);
-
-        res.status(201).json({ message: "Folder created successfully", folder });
-    } catch (error) {
-        res.status(500).json({ message: "Folder creation failed", error: error.message });
-    }
-};
 
 
-
-const moveFile = async (req, res) => {
-    try {
-        const { fileId, folderId } = req.body;
-        const file = await moveFileToFolder(fileId, folderId);
-
-        res.status(200).json({ message: "File moved successfully", file });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to move file", error: error.message });
-    }
-};
 
 
 
@@ -168,25 +112,6 @@ const getFilesByDateRange = async (req, res) => {
     }
 };
 
-const toggleFavoriteStatus = async (req, res) => {
-    try {
-        const { fileId } = req.params; // File ID from request parameters
-
-        if (!fileId) {
-            return res.status(400).json({ message: "File ID is required" });
-        }
-
-        // Call the service function to toggle favorite status
-        const updatedFile = await toggleFavorite(fileId);
-
-        res.status(200).json({
-            message: "File favorite status updated successfully",
-            file: updatedFile
-        });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to update favorite status", error: error.message });
-    }
-};
 
 const getFavoriteFiles = async (req, res) => {
     try {
@@ -209,49 +134,10 @@ const getFavoriteFiles = async (req, res) => {
 };
 
 
-const copyFile = async (req, res) => {
-    try {
-        const { fileId, newFolderId } = req.body;
-
-        if (!fileId || !newFolderId) {
-            return res.status(400).json({ message: "File ID and New Folder ID are required" });
-        }
-
-        const copiedFile = await copyFileService(fileId, newFolderId);
-
-        res.status(201).json({
-            message: "File copied successfully",
-            file: copiedFile
-        });
-
-    } catch (error) {
-        res.status(500).json({ message: "Failed to copy file", error: error.message });
-    }
-};
-
-const duplicateFile = async (req, res) => {
-    try {
-        const { fileId } = req.body;
-
-        if (!fileId) {
-            return res.status(400).json({ message: "File ID is required" });
-        }
-
-        const duplicatedFile = await duplicateFileService(fileId);
-
-        res.status(201).json({
-            message: "File duplicated successfully",
-            file: duplicatedFile
-        });
-
-    } catch (error) {
-        res.status(500).json({ message: "Failed to duplicate file", error: error.message });
-    }
-};
 
 module.exports = {
-    getStorageinfo, uploadFile,
-    getPdfsForUser, getNotesForUser, getImagesForUser,
-    createFolder, moveFile, getFilesInFolder, getFilesByDateRange,
-    toggleFavoriteStatus, getFavoriteFiles, duplicateFile, copyFile
+    getStorageinfo, getPdfsForUser,
+    getNotesForUser, getImagesForUser,
+    getFilesInFolder, getFilesByDateRange,
+    getFavoriteFiles
 }

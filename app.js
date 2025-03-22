@@ -31,12 +31,14 @@ app.get('/', (req, res) => {
 
 const UserRouter = require('./src/routes/UserRoutes')
 const StorageRouter = require('./src/routes/StorageRoutes')
+const SecureFolderRouter = require('./src/routes/SecureFolderRoute')
 
 
 
 
 app.use('/api', UserRouter)
 app.use('/api', StorageRouter)
+app.use('/api', SecureFolderRouter)
 
 
 

@@ -1,8 +1,10 @@
 const express = require('express')
 const verifyToken = require('../Middleware/Authentication')
-const { getStorageinfo, uploadFile, getPdfsForUser, getImagesForUser, getNotesForUser, createFolder, moveFile, getFilesInFolder, getFilesByDateRange, toggleFavoriteStatus, getFavoriteFiles, copyFile, duplicateFile } = require('../controllers/StorageController')
+const { getStorageinfo, getPdfsForUser, getImagesForUser, getNotesForUser, getFilesInFolder, getFilesByDateRange, getFavoriteFiles, } = require('../controllers/StorageController')
+const { uploadFile, moveFile, createFolder, toggleFavoriteStatus, copyFile, duplicateFile } = require('../controllers/FileController')
 const upload = require('../utils/multer')
 const router = express.Router()
+
 
 router.get('/storage', verifyToken, getStorageinfo)
 router.post('/upload', upload.single('file'), uploadFile);

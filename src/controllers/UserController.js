@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const { createUser, loginService, deleteUserService, passwordForgotService, verifyOTPService, resetPasswordService } = require('../services/UserService');
 const User = require('../models/User');
-
+const cloudinary = require("../config/cloudinary");
 
 const registerUser = async (req, res) => {
     try {
@@ -103,27 +103,54 @@ const resetPassword = async (req, res) => {
 };
 const updateProfile = async (req, res) => {
     try {
-        const { userId, username, profilePic } = req.body;
+        const { userId, username } = req.body;
 
         if (!userId) {
             return res.status(400).json({ message: "User ID is required" });
         }
 
-        if (!username && !profilePic) {
-            return res.status(400).json({ message: "Provide at least one field to update" });
+        let profilePicUrl = null;
+
+        // If a file is uploaded, upload it to Cloudinary
+        if (req.file) {
+            const result = await cloudinary.uploader.upload_stream(
+                { folder: "profile_pictures" },
+                async (error, result) => {
+                    if (error) {
+                        return res.status(500).json({ message: "Cloudinary upload failed", error: error.message });
+                    }
+
+                    profilePicUrl = result.secure_url;
+
+                    // Update user in MongoDB
+                    const updatedUser = await User.findByIdAndUpdate(
+                        userId,
+                        { $set: { username, profilePic: profilePicUrl } },
+                        { new: true, runValidators: true }
+                    );
+
+                    if (!updatedUser) {
+                        return res.status(404).json({ message: "User not found" });
+                    }
+
+                    res.json({ message: "Profile updated successfully", user: updatedUser });
+                }
+            );
+            result.end(req.file.buffer);
+        } else {
+            // If no file is uploaded, update only the username
+            const updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { $set: { username } },
+                { new: true, runValidators: true }
+            );
+
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            res.json({ message: "Profile updated successfully", user: updatedUser });
         }
-
-        const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            { $set: { username, profilePic } },
-            { new: true, runValidators: true }
-        );
-
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        res.json({ message: "Profile updated successfully", user: updatedUser });
 
     } catch (error) {
         res.status(500).json({ message: "Failed to update profile", error: error.message });
