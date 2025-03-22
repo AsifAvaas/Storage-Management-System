@@ -10,9 +10,9 @@ const UserSchema = new Schema({
     totalStorage: { type: Number, default: 15 * 1024 * 1024 * 1024 }, // 15GB in bytes
     usedStorage: { type: Number, default: 0 },
     storageUsage: {
-        images: { type: Number, default: 0 },
-        pdfs: { type: Number, default: 0 },
-        notes: { type: Number, default: 0 }
+        image: { count: { type: Number, default: 0 }, size: { type: Number, default: 0 } },
+        pdf: { count: { type: Number, default: 0 }, size: { type: Number, default: 0 } },
+        note: { count: { type: Number, default: 0 }, size: { type: Number, default: 0 } }
     }
 }, { timestamps: true })
 

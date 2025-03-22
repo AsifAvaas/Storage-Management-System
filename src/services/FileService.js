@@ -1,30 +1,7 @@
-const cloudinary = require("../config/cloudinary");
 const File = require("../models/File");
-const Folder = require("../models/Folder");
 const User = require("../models/User");
 
 
-const storageInfoService = async (email) => {
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            const error = new Error("User not found");
-            error.statusCode = 404
-            throw error
-        }
-        const userStorage = {
-            totalStorage: user.totalStorage,
-            usedStorage: user.usedStorage,
-            storageUsage: user.storageUsage,
-        };
-        return userStorage;
-
-    } catch (error) {
-        console.error(error);
-        throw error;
-
-    }
-}
 
 const uploadFileToCloudinary = (file, folder = 'Database Management System') => {
     return new Promise((resolve, reject) => {
@@ -77,6 +54,7 @@ const createFolderService = async (userId, folderName) => {
     return await newFolder.save();
 };
 
+
 const moveFileToFolder = async (fileId, folderId) => {
     if (!fileId || !folderId) {
         throw new Error("File ID and Folder ID are required");
@@ -90,30 +68,6 @@ const moveFileToFolder = async (fileId, folderId) => {
     file.folderId = folderId;
     return await file.save();
 };
-
-const getFilesByFolder = async (folderId) => {
-    try {
-        return await File.find({ folderId });
-    } catch (error) {
-        throw new Error("Error fetching files: " + error.message);
-    }
-};
-
-const getFilesByDate = async (date) => {
-    try {
-        const startOfDay = new Date(date.setHours(0, 0, 0, 0));
-        const endOfDay = new Date(date.setHours(23, 59, 59, 999));
-
-        const files = await File.find({
-            uploadedAt: { $gte: startOfDay, $lte: endOfDay }
-        });
-
-        return files;
-    } catch (error) {
-        throw new Error("Error fetching files by date: " + error.message);
-    }
-};
-
 
 const toggleFavorite = async (fileId) => {
     try {
@@ -134,16 +88,6 @@ const toggleFavorite = async (fileId) => {
         throw new Error("Error updating favorite status: " + error.message);
     }
 };
-
-const getFavorite = async (userId) => {
-    try {
-        const favoriteFiles = await File.find({ userId, isFavorite: true });
-        return favoriteFiles;
-    } catch (error) {
-        throw new Error("Error fetching favorite files: " + error.message);
-    }
-};
-
 
 const copyFileService = async (fileId, newFolderId) => {
     try {
@@ -195,15 +139,12 @@ const duplicateFileService = async (fileId) => {
 
 
 module.exports = {
-    storageInfoService, uploadFileToCloudinary,
+    uploadFileToCloudinary,
     createFileRecord,
     updateUserStorageInfo,
     createFolderService,
     moveFileToFolder,
-    getFilesByFolder,
-    getFilesByDate,
     toggleFavorite,
-    getFavorite,
     copyFileService,
     duplicateFileService
-}
+};

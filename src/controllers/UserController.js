@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const { createUser, loginService, deleteUserService, passwordForgotService, verifyOTPService, resetPasswordService } = require('../services/UserService');
+const User = require('../models/User');
 
 
 const registerUser = async (req, res) => {
@@ -100,7 +101,91 @@ const resetPassword = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server error" });
     }
 };
+const updateProfile = async (req, res) => {
+    try {
+        const { userId, username, profilePic } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
+
+        if (!username && !profilePic) {
+            return res.status(400).json({ message: "Provide at least one field to update" });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { $set: { username, profilePic } },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({ message: "Profile updated successfully", user: updatedUser });
+
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update profile", error: error.message });
+    }
+};
+
+const getProfile = async (req, res) => {
+    try {
+        const id = req.headers['userid']
+        if (!id) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found", user });
+        }
+        const { username, email, profilePic, createdAt } = user;
+        res.status(200).json({ message: "Profile fetched successfully", data: { username, email, profilePic, createdAt } });
+
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch profile", error: error.message });
+
+    }
+}
 
 
+const changePassword = async (req, res) => {
+    try {
 
-module.exports = { registerUser, loginUser, logoutUser, deleteUser, forgotPassword, verifyOTP, resetPassword }
+        const { userId, oldPassword, newPassword } = req.body;
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
+        if (!oldPassword || !newPassword) {
+            return res.status(400).json({ message: "Old and new passwords are required" });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Compare old password
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Old password is incorrect" });
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update password
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({ message: "Password changed successfully" });
+
+    } catch (error) {
+        res.status(500).json({ message: "Failed to change password", error: error.message });
+    }
+};
+
+
+module.exports = { registerUser, loginUser, logoutUser, deleteUser, forgotPassword, verifyOTP, resetPassword, updateProfile, getProfile, changePassword }
