@@ -1,9 +1,0 @@
-
-MONGO_URI=<your_mongo_uri>
-PORT= <your_port>
-FRONTEND_URL=<your_front_end_url>
-JWT_SECRET=<your_jwt_secret>
-
-MAILER=<your_mail_id_for_sending_emails>
-MAIL_PASSWORD=<your_nodemailer_password>
-

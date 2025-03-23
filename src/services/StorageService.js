@@ -61,6 +61,22 @@ const getFavorite = async (userId) => {
     }
 };
 
+const renameFile = async (fileId, newFileName) => {
+    const file = await File.findById(fileId);
+    if (!file) {
+        throw new Error("File not found");
+    }
+    file.fileName = newFileName;
+    await file.save();
+    return file;
+};
+const deleteFile = async (fileId) => {
+    const file = await File.findByIdAndDelete(fileId);
+    if (!file) {
+        throw new Error("File not found");
+    }
+    return file;
+};
 
 
 
@@ -69,4 +85,6 @@ module.exports = {
     getFilesByFolder,
     getFilesByDate,
     getFavorite,
+    renameFile,
+    deleteFile
 }

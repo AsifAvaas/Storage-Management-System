@@ -1,6 +1,6 @@
 const express = require('express')
 const verifyToken = require('../Middleware/Authentication')
-const { getStorageinfo, getPdfsForUser, getImagesForUser, getNotesForUser, getFilesInFolder, getFilesByDateRange, getFavoriteFiles, } = require('../controllers/StorageController')
+const { getStorageinfo, getPdfsForUser, getImagesForUser, getNotesForUser, getFilesInFolder, getFilesByDateRange, getFavoriteFiles, renameFileController, deleteFileController, } = require('../controllers/StorageController')
 const { uploadFile, moveFile, createFolder, toggleFavoriteStatus, copyFile, duplicateFile } = require('../controllers/FileController')
 const upload = require('../utils/multer')
 const router = express.Router()
@@ -19,6 +19,7 @@ router.put("/toggle-favorite/:fileId", toggleFavoriteStatus);
 router.get("/favorites/:userId", getFavoriteFiles);
 router.post("/copy-file", copyFile);
 router.post("/duplicate-file", duplicateFile);
-
+router.put("/rename", renameFileController);
+router.delete("/delete/:fileId", deleteFileController);
 
 module.exports = router

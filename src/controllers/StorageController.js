@@ -1,6 +1,6 @@
 const File = require("../models/File");
 const User = require("../models/User");
-const { storageInfoService, getFilesByFolder, getFilesByDate, getFavorite } = require("../services/StorageService");
+const { storageInfoService, getFilesByFolder, getFilesByDate, getFavorite, renameFile, deleteFile } = require("../services/StorageService");
 
 
 const getStorageinfo = async (req, res) => {
@@ -133,11 +133,42 @@ const getFavoriteFiles = async (req, res) => {
     }
 };
 
+const renameFileController = async (req, res) => {
+    try {
+        const { fileId, newFileName } = req.body;
 
+        if (!fileId || !newFileName) {
+            return res.status(400).json({ message: "fileId and newFileName are required" });
+        }
+
+        const updatedFile = await renameFile(fileId, newFileName);
+        return res.status(200).json({ message: "File renamed successfully", file: updatedFile });
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+const deleteFileController = async (req, res) => {
+    try {
+        const { fileId } = req.params;
+
+        if (!fileId) {
+            return res.status(400).json({ message: "fileId is required" });
+        }
+
+        await deleteFile(fileId);
+        return res.status(200).json({ message: "File deleted successfully" });
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
 
 module.exports = {
     getStorageinfo, getPdfsForUser,
     getNotesForUser, getImagesForUser,
     getFilesInFolder, getFilesByDateRange,
-    getFavoriteFiles
+    getFavoriteFiles, renameFileController,
+    deleteFileController
 }
