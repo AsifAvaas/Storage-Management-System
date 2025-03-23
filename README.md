@@ -22,10 +22,12 @@ This is a **Storage Management System** built using **Node.js, Express.js, and M
 │   ├── 📁 middlewares        # Authentication and other middleware
 │   ├── 📁 config             # Configuration files (DB connection, etc.)
 │   ├── 📁 utils              # Utility functions
-├── .env.example         # Example environment variables
-├── postman_collection.json # Postman collection for API testing
-├── package.json         # Project dependencies
-├── README.md            # Documentation
+├── app.js
+├── index.js
+├── .env.example              # Example environment variables
+├── postman_collection.json   # Postman collection for API testing
+├── package.json              # Project dependencies
+├── README.md                 # Documentation
 ```
 
 
