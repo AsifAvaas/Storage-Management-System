@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"asif@gmail.com\",\r\n    \"password\":\"123@Abcd\"\r\n}",
+					"raw": "{\r\n    \"email\":\"asif123@gmail.com\",\r\n    \"password\":\"123@Abcd\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -27,7 +27,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/login",
+					"raw": "http://localhost:8080/api/auth/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -35,6 +35,7 @@
 					"port": "8080",
 					"path": [
 						"api",
+						"auth",
 						"login"
 					]
 				}
@@ -53,7 +54,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"asif@gmail.com\",\r\n    \"password\":\"123@Abcd\"\r\n}",
+							"raw": "{\r\n    \"email\":\"asif123@gmail.com\",\r\n    \"password\":\"123@Abcd\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -61,7 +62,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/login",
+							"raw": "http://localhost:8080/api/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -69,6 +70,7 @@
 							"port": "8080",
 							"path": [
 								"api",
+								"auth",
 								"login"
 							]
 						}
@@ -95,11 +97,11 @@
 						},
 						{
 							"key": "Set-Cookie",
-							"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGY5NWU3NWYzNDM1MmYxMThhZmFmOCIsImlhdCI6MTc0MjcwNjE3MiwiZXhwIjoxNzQyNzA5NzcyfQ.On9GTRv7H6RcKOPawS93PJQdLQUOimE0tr_aCRt6XN0; Max-Age=3600; Path=/; Expires=Sun, 23 Mar 2025 06:02:52 GMT; HttpOnly; SameSite=Strict"
+							"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGY5YmMyODYzOGNjZTI0YjExMjUxZSIsImlhdCI6MTc0MjcwNzcyNCwiZXhwIjoxNzQyNzExMzI0fQ.6rnN_NqccIPE3NynyNLptr67hY4tVtk1pRi04pq8XMk; Max-Age=3600; Path=/; Expires=Sun, 23 Mar 2025 06:28:44 GMT; HttpOnly; SameSite=Strict"
 						},
 						{
 							"key": "Set-Cookie",
-							"value": "refreshtoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGY5NWU3NWYzNDM1MmYxMThhZmFmOCIsImlhdCI6MTc0MjcwNjE3MiwiZXhwIjoxNzQ1Mjk4MTcyfQ.kYkMptPlaiqEFst6-uf8SPo05FA7PEITGGHnaVuwqQ0; Max-Age=2592000; Path=/; Expires=Tue, 22 Apr 2025 05:02:52 GMT; HttpOnly; SameSite=Strict"
+							"value": "refreshtoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGY5YmMyODYzOGNjZTI0YjExMjUxZSIsImlhdCI6MTc0MjcwNzcyNCwiZXhwIjoxNzQ1Mjk5NzI0fQ.mebslFhT61YKL_2KgF0vuOiapRRvDzII9_06bZmgq-8; Max-Age=2592000; Path=/; Expires=Tue, 22 Apr 2025 05:28:44 GMT; HttpOnly; SameSite=Strict"
 						},
 						{
 							"key": "Content-Type",
@@ -107,15 +109,15 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "462"
+							"value": "465"
 						},
 						{
 							"key": "ETag",
-							"value": "W/\"1ce-CCNLJOs3C2OBrwhMsKgTWojnfl0\""
+							"value": "W/\"1d1-DdteYANTRIREHfb/feYKnOGmnlA\""
 						},
 						{
 							"key": "Date",
-							"value": "Sun, 23 Mar 2025 05:02:52 GMT"
+							"value": "Sun, 23 Mar 2025 05:28:44 GMT"
 						},
 						{
 							"key": "Connection",
@@ -127,7 +129,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"message\": \"Logged in successfully\",\n    \"data\": {\n        \"storageUsage\": {\n            \"image\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"pdf\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"note\": {\n                \"count\": 0,\n                \"size\": 0\n            }\n        },\n        \"_id\": \"67df95e75f34352f118afaf8\",\n        \"username\": \"Asif Avaas\",\n        \"email\": \"asif@gmail.com\",\n        \"password\": \"$2b$10$wQggjRJ.sHvwsDjOe9cz0eAd0vzHQciKPy8a4vVpIQHYHogEPZmli\",\n        \"profilePic\": \"\",\n        \"totalStorage\": 16106127360,\n        \"usedStorage\": 0,\n        \"createdAt\": \"2025-03-23T05:02:31.948Z\",\n        \"updatedAt\": \"2025-03-23T05:02:31.948Z\",\n        \"__v\": 0\n    }\n}"
+					"body": "{\n    \"success\": true,\n    \"message\": \"Logged in successfully\",\n    \"data\": {\n        \"storageUsage\": {\n            \"image\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"pdf\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"note\": {\n                \"count\": 0,\n                \"size\": 0\n            }\n        },\n        \"_id\": \"67df9bc28638cce24b11251e\",\n        \"username\": \"Asif Avaas\",\n        \"email\": \"asif123@gmail.com\",\n        \"password\": \"$2b$10$nJqwVANKovyIWfIzEHcHMeBuvyDLbqJkBv0DXo8DjX7kLYOZvqWJi\",\n        \"profilePic\": \"\",\n        \"totalStorage\": 16106127360,\n        \"usedStorage\": 0,\n        \"createdAt\": \"2025-03-23T05:27:30.153Z\",\n        \"updatedAt\": \"2025-03-23T05:27:30.153Z\",\n        \"__v\": 0\n    }\n}"
 				}
 			]
 		},
@@ -144,7 +146,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\":\"Asif Avaas\",\r\n  \"email\":\"asif@gmail.com\",\r\n  \"password\":\"123@Abcd\"\r\n}",
+					"raw": "{\r\n  \"username\":\"Asif Avaas\",\r\n  \"email\":\"avaas@gmail.com\",\r\n  \"password\":\"123@Abcd\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -152,7 +154,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/register",
+					"raw": "http://localhost:8080/api/auth/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -160,6 +162,7 @@
 					"port": "8080",
 					"path": [
 						"api",
+						"auth",
 						"register"
 					]
 				}
@@ -178,7 +181,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\":\"Asif Avaas\",\r\n  \"email\":\"asif@gmail.com\",\r\n  \"password\":\"123@Abcd\"\r\n}",
+							"raw": "{\r\n  \"username\":\"Asif Avaas\",\r\n  \"email\":\"avaas@gmail.com\",\r\n  \"password\":\"123@Abcd\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -186,7 +189,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/register",
+							"raw": "http://localhost:8080/api/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -194,6 +197,7 @@
 							"port": "8080",
 							"path": [
 								"api",
+								"auth",
 								"register"
 							]
 						}
@@ -224,15 +228,15 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "462"
+							"value": "463"
 						},
 						{
 							"key": "ETag",
-							"value": "W/\"1ce-pzuEoqXJ7RNsMCpPNfim8BOIrd4\""
+							"value": "W/\"1cf-UrmvQOBO20ix/Vc9TrTqcXcKLmE\""
 						},
 						{
 							"key": "Date",
-							"value": "Sun, 23 Mar 2025 05:02:31 GMT"
+							"value": "Sun, 23 Mar 2025 05:29:12 GMT"
 						},
 						{
 							"key": "Connection",
@@ -244,7 +248,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"message\": \"Signed up successfully\",\n    \"data\": {\n        \"username\": \"Asif Avaas\",\n        \"email\": \"asif@gmail.com\",\n        \"password\": \"$2b$10$wQggjRJ.sHvwsDjOe9cz0eAd0vzHQciKPy8a4vVpIQHYHogEPZmli\",\n        \"profilePic\": \"\",\n        \"totalStorage\": 16106127360,\n        \"usedStorage\": 0,\n        \"storageUsage\": {\n            \"image\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"pdf\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"note\": {\n                \"count\": 0,\n                \"size\": 0\n            }\n        },\n        \"_id\": \"67df95e75f34352f118afaf8\",\n        \"createdAt\": \"2025-03-23T05:02:31.948Z\",\n        \"updatedAt\": \"2025-03-23T05:02:31.948Z\",\n        \"__v\": 0\n    }\n}"
+					"body": "{\n    \"success\": true,\n    \"message\": \"Signed up successfully\",\n    \"data\": {\n        \"username\": \"Asif Avaas\",\n        \"email\": \"avaas@gmail.com\",\n        \"password\": \"$2b$10$Qai6qtMfVJMxNr2aT2CnJOi8lmxtDo47rLF8h3XSaEJjONYTiI79e\",\n        \"profilePic\": \"\",\n        \"totalStorage\": 16106127360,\n        \"usedStorage\": 0,\n        \"storageUsage\": {\n            \"image\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"pdf\": {\n                \"count\": 0,\n                \"size\": 0\n            },\n            \"note\": {\n                \"count\": 0,\n                \"size\": 0\n            }\n        },\n        \"_id\": \"67df9c288638cce24b112524\",\n        \"createdAt\": \"2025-03-23T05:29:12.574Z\",\n        \"updatedAt\": \"2025-03-23T05:29:12.574Z\",\n        \"__v\": 0\n    }\n}"
 				}
 			]
 		},

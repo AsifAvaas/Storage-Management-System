@@ -36,7 +36,7 @@ const SecureFolderRouter = require('./src/routes/SecureFolderRoute')
 
 
 
-app.use('/api', UserRouter)
+app.use('/api/auth', UserRouter)
 app.use('/api', StorageRouter)
 app.use('/api', SecureFolderRouter)
 
